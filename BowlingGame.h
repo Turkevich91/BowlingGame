@@ -1,10 +1,7 @@
 #ifndef BOWLING_GAME_H
 #define BOWLING_GAME_H
-
 #include <iostream>
 #include <iomanip> // For formatting output
-#include <string>
-#include <vector>
 
 class BowlingGame {
 public:

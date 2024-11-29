@@ -1,12 +1,14 @@
 #include "BowlingGame.h"
 
+
+
 BowlingGame::BowlingGame() : currentRoll(0), currentFrame(0) {
     // Initialize arrays with zeros using range-based for loop
     for (int& roll : rolls) roll = 0;
     for (int& score : scores) score = 0;
 }
 
-void BowlingGame::roll(int pins) {
+void BowlingGame::roll(const int pins) {
     rolls[currentRoll++] = pins;
     if (currentFrame < 9) { // Frames 1-9
         if (pins == 10 || currentRoll % 2 == 0) { // Strike or second roll of frame
@@ -92,23 +94,23 @@ bool BowlingGame::isTenthFrameExtraRoll() const {
     return currentFrame == 9 && currentRoll >= 2 && (rolls[18] == 10 || rolls[18] + rolls[19] == 10);
 }
 
-bool BowlingGame::isStrike(int rollIndex) const {
+bool BowlingGame::isStrike(const int rollIndex) const {
     return rolls[rollIndex] == 10;
 }
 
-bool BowlingGame::isSpare(int rollIndex) const {
+bool BowlingGame::isSpare(const int rollIndex) const {
     return rolls[rollIndex] + rolls[rollIndex + 1] == 10;
 }
 
-int BowlingGame::strikeBonus(int rollIndex) const {
+int BowlingGame::strikeBonus(const int rollIndex) const {
     return rolls[rollIndex + 1] + rolls[rollIndex + 2];
 }
 
-int BowlingGame::spareBonus(int rollIndex) const {
+int BowlingGame::spareBonus(const int rollIndex) const {
     return rolls[rollIndex + 2];
 }
 
-int BowlingGame::frameScore(int rollIndex) const {
+int BowlingGame::frameScore(const int rollIndex) const {
     return rolls[rollIndex] + rolls[rollIndex + 1];
 }
 

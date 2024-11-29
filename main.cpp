@@ -8,6 +8,7 @@ int main() {
     while (!game.isGameOver()) {
         std::cout << "Throw: ";
         std::cin >> pins;
+        std::cout << std::endl;
 
         if (pins < 0 || pins > 10) {
             std::cout << "Invalid input. Please enter a value between 0 and 10." << std::endl;
