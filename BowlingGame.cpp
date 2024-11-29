@@ -49,19 +49,18 @@ void BowlingGame::printScore() const {
     constexpr int columnWidth = 6; // Set column width to 6 for better formatting
 
     // Only print frames that have been played
-    std::cout << "Frame:  ";
+    std::cout << "Frame:";
     for (int i = 0; i < currentFrame; i++) {
         std::string frameNum = std::to_string(i + 1);
         int padding = (columnWidth - frameNum.length()) / 2;
-        std::cout << "|" << std::string(padding, ' ') << frameNum << std::string(columnWidth - padding - frameNum.length(), ' ');
+        std::cout << std::string(padding, ' ') << frameNum << std::string(columnWidth - padding - frameNum.length(), ' ') << "|";
     }
-    std::cout << "|" << std::endl;
+    std::cout << std::endl;
 
     // Line Throw:
-    std::cout << "Throw:  ";
+    std::cout << "Throw:";
     int rollIndex = 0;
     for (int frame = 0; frame < currentFrame; frame++) {
-        std::cout << "|";
         std::string throwStr;
         if (isStrike(rollIndex)) { // Strike
             throwStr = "10";
@@ -73,20 +72,28 @@ void BowlingGame::printScore() const {
             }
         }
         int padding = (columnWidth - throwStr.length()) / 2;
-        std::cout << std::string(padding, ' ') << throwStr << std::string(columnWidth - padding - throwStr.length(), ' ');
+        std::cout << std::string(padding, ' ') << throwStr << std::string(columnWidth - padding - throwStr.length(), ' ') << "|";
         rollIndex++;
     }
-    std::cout << "|" << std::endl;
+    std::cout << std::endl;
 
     // Line Score
-    std::cout << "Score:  ";
+    std::cout << "Score:";
     for (int i = 0; i < currentFrame; i++) {
-        std::string scoreStr = (isStrike(i) ? "X" : (isSpare(i) ? "/" : std::to_string(scores[i])));
+        std::string scoreStr;
+        if (isStrike(i * 2)) {
+            scoreStr = "X";
+        } else if (isSpare(i * 2)) {
+            scoreStr = "/";
+        } else {
+            scoreStr = std::to_string(scores[i]);
+        }
         int padding = (columnWidth - scoreStr.length()) / 2;
-        std::cout << "|" << std::string(padding, ' ') << scoreStr << std::string(columnWidth - padding - scoreStr.length(), ' ');
+        std::cout << std::string(padding, ' ') << scoreStr << std::string(columnWidth - padding - scoreStr.length(), ' ') << "|";
     }
-    std::cout << "|" << std::endl << std::endl;
+    std::cout << std::endl << std::endl;
 }
+
 
 
 bool BowlingGame::isTenthFrameExtraRoll() const {
