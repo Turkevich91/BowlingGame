@@ -143,15 +143,13 @@ void BowlingGame::loadGameFromFile(const std::string& filename) {
         return;
     }
 
-    std::string line;
-    while (std::getline(inputFile, line)) {
-        std::istringstream iss(line);
-        int pins;
-        while (iss >> pins) {
-            roll(pins);
-            if (isGameOver()) {
-                break;
-            }
+    int pins;
+    while (inputFile >> pins) {
+        roll(pins);
+        if (isGameOver()) {
+            break;
         }
     }
+
+    inputFile.close();
 }
