@@ -46,53 +46,121 @@ bool BowlingGame::isGameOver() const {
 }
 
 void BowlingGame::printScore() const {
-    constexpr int columnWidth = 6; // Set column width to 6 for better formatting
+    constexpr int columnWidth = 6;
 
-    // Only print frames that have been played
+    // Print frame numbers
     std::cout << "Frame:";
-    for (int i = 0; i < currentFrame; i++) {
-        std::string frameNum = std::to_string(i + 1);
+    int rollIndex = 0; // Track roll index globally for consistency
+    for (int frame = 0; frame < 10; frame++) { // Iterate through all 10 frames
+        std::string throwStr;
+
+        // Determine throws for the current frame
+        if (frame < 9) { // Frames 1-9
+            if (rollIndex < currentRoll && isStrike(rollIndex)) { // Strike
+                throwStr = "10";
+                rollIndex++;
+            } else if (rollIndex + 1 < currentRoll) { // Normal or spare
+                throwStr = std::to_string(rolls[rollIndex]) + " " + std::to_string(rolls[rollIndex + 1]);
+                rollIndex += 2;
+            }
+        } else { // 10th frame
+            for (int i = 0; i < 3 && rollIndex < currentRoll; i++) { // Up to 3 rolls
+                throwStr += std::to_string(rolls[rollIndex]) + " ";
+                rollIndex++;
+            }
+            if (!throwStr.empty()) {
+                throwStr.pop_back(); // Remove trailing space
+            }
+        }
+
+        // Skip this frame entirely if there is no data in Throw:
+        if (throwStr.empty()) {
+            continue;
+        }
+
+        // Frame numbers
+        std::string frameNum = std::to_string(frame + 1);
         int padding = (columnWidth - frameNum.length()) / 2;
         std::cout << std::string(padding, ' ') << frameNum << std::string(columnWidth - padding - frameNum.length(), ' ') << "|";
     }
     std::cout << std::endl;
 
-    // Line Throw:
+    // Print throws
     std::cout << "Throw:";
-    int rollIndex = 0;
-    for (int frame = 0; frame < currentFrame; frame++) {
+    rollIndex = 0; // Reset roll index for throws line
+    for (int frame = 0; frame < 10; frame++) {
         std::string throwStr;
-        if (isStrike(rollIndex)) { // Strike
-            throwStr = "10";
-        } else {
-            throwStr = std::to_string(rolls[rollIndex]);
-            rollIndex++;
-            if (rollIndex < currentRoll) {
-                throwStr += " " + std::to_string(rolls[rollIndex]);
+
+        // Determine throws for the current frame
+        if (frame < 9) { // Frames 1-9
+            if (rollIndex < currentRoll && isStrike(rollIndex)) { // Strike
+                throwStr = "10";
+                rollIndex++;
+            } else if (rollIndex + 1 < currentRoll) { // Normal or spare
+                throwStr = std::to_string(rolls[rollIndex]) + " " + std::to_string(rolls[rollIndex + 1]);
+                rollIndex += 2;
+            }
+        } else { // 10th frame
+            for (int i = 0; i < 3 && rollIndex < currentRoll; i++) { // Up to 3 rolls
+                throwStr += std::to_string(rolls[rollIndex]) + " ";
+                rollIndex++;
+            }
+            if (!throwStr.empty()) {
+                throwStr.pop_back(); // Remove trailing space
             }
         }
+
+        // Skip this frame entirely if there is no data in Throw:
+        if (throwStr.empty()) {
+            continue;
+        }
+
         int padding = (columnWidth - throwStr.length()) / 2;
         std::cout << std::string(padding, ' ') << throwStr << std::string(columnWidth - padding - throwStr.length(), ' ') << "|";
-        rollIndex++;
     }
     std::cout << std::endl;
 
-    // Line Score
+    // Print scores
     std::cout << "Score:";
-    for (int i = 0; i < currentFrame; i++) {
-        std::string scoreStr;
-        if (isStrike(i * 2)) {
-            scoreStr = "X";
-        } else if (isSpare(i * 2)) {
-            scoreStr = "/";
-        } else {
-            scoreStr = std::to_string(scores[i]);
+    rollIndex = 0; // Reset roll index for consistency
+    for (int frame = 0; frame < 10; frame++) {
+        std::string throwStr;
+
+        // Determine throws for the current frame
+        if (frame < 9) { // Frames 1-9
+            if (rollIndex < currentRoll && isStrike(rollIndex)) { // Strike
+                throwStr = "10";
+                rollIndex++;
+            } else if (rollIndex + 1 < currentRoll) { // Normal or spare
+                throwStr = std::to_string(rolls[rollIndex]) + " " + std::to_string(rolls[rollIndex + 1]);
+                rollIndex += 2;
+            }
+        } else { // 10th frame
+            for (int i = 0; i < 3 && rollIndex < currentRoll; i++) { // Up to 3 rolls
+                throwStr += std::to_string(rolls[rollIndex]) + " ";
+                rollIndex++;
+            }
+            if (!throwStr.empty()) {
+                throwStr.pop_back(); // Remove trailing space
+            }
         }
+
+        // Skip this frame entirely if there is no data in Throw:
+        if (throwStr.empty()) {
+            continue;
+        }
+
+        std::string scoreStr = std::to_string(scores[frame]);
         int padding = (columnWidth - scoreStr.length()) / 2;
         std::cout << std::string(padding, ' ') << scoreStr << std::string(columnWidth - padding - scoreStr.length(), ' ') << "|";
     }
     std::cout << std::endl << std::endl;
 }
+
+
+
+
+
 
 
 
