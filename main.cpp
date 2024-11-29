@@ -1,23 +1,18 @@
 #include "BowlingGame.h"
+#include <string>
 
 int main() {
     BowlingGame game;
-    int pins;
+    std::string filename;
 
-    std::cout << "Enter the result of each throw in order:" << std::endl;
-    while (!game.isGameOver()) {
-        std::cout << "Throw: ";
-        std::cin >> pins;
-        std::cout << std::endl;
+    std::cout << "Enter the filename to load the game (e.g., bowler1.txt): ";
+    std::cin >> filename;
 
-        if (pins < 0 || pins > 10) {
-            std::cout << "Invalid input. Please enter a value between 0 and 10." << std::endl;
-            continue;
-        }
+    // Load the game from the file
+    game.loadGameFromFile(filename);
 
-        game.roll(pins);
-    }
-
+    // Print the final score after all frames have been played
     std::cout << "Final score: " << game.getScore() << std::endl;
+
     return 0;
 }

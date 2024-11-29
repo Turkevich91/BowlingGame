@@ -1,5 +1,6 @@
 // BowlingGame.cpp
 #include "BowlingGame.h"
+#include <fstream>
 
 BowlingGame::BowlingGame() : currentRoll(0), currentFrame(0) {
     // Initialize arrays with zeros
@@ -27,7 +28,9 @@ void BowlingGame::roll(const int pins) {
         }
     }
     calculateScore();  // Recalculate scores after each roll
-    printScore();      // Print the results on the screen
+    if (currentRoll % 2 == 0 || pins == 10 || currentFrame == 10) {
+        printScore();  // Print the results after each frame
+    }
 }
 
 int BowlingGame::getScore() const {
@@ -130,5 +133,25 @@ void BowlingGame::calculateScore() {
 
         // Add to previous frames
         if (frame > 0) scores[frame] += scores[frame - 1];
+    }
+}
+
+void BowlingGame::loadGameFromFile(const std::string& filename) {
+    std::ifstream inputFile(filename);
+    if (!inputFile) {
+        std::cerr << "Error: Unable to open file " << filename << std::endl;
+        return;
+    }
+
+    std::string line;
+    while (std::getline(inputFile, line)) {
+        std::istringstream iss(line);
+        int pins;
+        while (iss >> pins) {
+            roll(pins);
+            if (isGameOver()) {
+                break;
+            }
+        }
     }
 }

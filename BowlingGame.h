@@ -2,13 +2,17 @@
 #define BOWLING_GAME_H
 #include <iostream>
 #include <iomanip> // For formatting output
+#include <fstream>
 
 class BowlingGame {
 public:
-    BowlingGame();  // Default constructor
+    BowlingGame(); // Default constructor
 
     // Method to register a roll
     void roll(int pins);
+
+    // Read the file
+    void loadGameFromFile(const std::string &filename);
 
     // Method to get the current score
     int getScore() const;
