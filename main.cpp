@@ -12,8 +12,5 @@ int main() {
     // Load the game from the file
     game.loadGameFromFile(filename);
 
-    // Print the final score after all frames have been played
-    std::cout << "Final score: " << game.getScore() << std::endl;
-
     return 0;
 }

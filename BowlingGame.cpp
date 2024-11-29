@@ -63,17 +63,13 @@ void BowlingGame::printScore() const {
     for (int frame = 0; frame < currentFrame; frame++) {
         std::cout << "|";
         std::string throwStr;
-        if (rolls[rollIndex] == 10) { // Strike
-            throwStr = "X";
+        if (isStrike(rollIndex)) { // Strike
+            throwStr = "10";
         } else {
             throwStr = std::to_string(rolls[rollIndex]);
             rollIndex++;
             if (rollIndex < currentRoll) {
-                if (rolls[rollIndex - 1] + rolls[rollIndex] == 10) {
-                    throwStr += " /";
-                } else {
-                    throwStr += " " + std::to_string(rolls[rollIndex]);
-                }
+                throwStr += " " + std::to_string(rolls[rollIndex]);
             }
         }
         int padding = (columnWidth - throwStr.length()) / 2;
@@ -85,12 +81,13 @@ void BowlingGame::printScore() const {
     // Line Score
     std::cout << "Score:  ";
     for (int i = 0; i < currentFrame; i++) {
-        std::string scoreStr = std::to_string(scores[i]);
+        std::string scoreStr = (isStrike(i) ? "X" : (isSpare(i) ? "/" : std::to_string(scores[i])));
         int padding = (columnWidth - scoreStr.length()) / 2;
         std::cout << "|" << std::string(padding, ' ') << scoreStr << std::string(columnWidth - padding - scoreStr.length(), ' ');
     }
     std::cout << "|" << std::endl << std::endl;
 }
+
 
 bool BowlingGame::isTenthFrameExtraRoll() const {
     // Corrected logic to ensure that the extra roll in the 10th frame is accurately handled.
