@@ -150,7 +150,16 @@ void BowlingGame::printScore() const {
             continue;
         }
 
-        std::string scoreStr = std::to_string(scores[frame]);
+        // Determine the score string
+        std::string scoreStr;
+        if (isStrike(frame * 2)) { // Strike
+            scoreStr = "X";
+        } else if (isSpare(frame * 2)) { // Spare
+            scoreStr = "/";
+        } else {
+            scoreStr = std::to_string(scores[frame]);
+        }
+
         int padding = (columnWidth - scoreStr.length()) / 2;
         std::cout << std::string(padding, ' ') << scoreStr << std::string(columnWidth - padding - scoreStr.length(), ' ') << "|";
     }
