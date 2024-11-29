@@ -20,7 +20,7 @@ public:
     bool isGameOver() const;
 
     // Method to display the current score (for debugging)
-    void printCurrentScore() const;
+    void printScore() const;
 
     // Method to calculate the score
     void calculateScore();

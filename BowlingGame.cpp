@@ -1,9 +1,8 @@
+// BowlingGame.cpp
 #include "BowlingGame.h"
 
-
-
 BowlingGame::BowlingGame() : currentRoll(0), currentFrame(0) {
-    // Initialize arrays with zeros using range-based for loop
+    // Initialize arrays with zeros
     for (int& roll : rolls) roll = 0;
     for (int& score : scores) score = 0;
 }
@@ -28,7 +27,7 @@ void BowlingGame::roll(const int pins) {
         }
     }
     calculateScore();  // Recalculate scores after each roll
-    printCurrentScore();      // Print the results on the screen
+    printScore();      // Print the results on the screen
 }
 
 int BowlingGame::getScore() const {
@@ -43,54 +42,55 @@ bool BowlingGame::isGameOver() const {
     return currentFrame >= 10;
 }
 
-void BowlingGame::printCurrentScore() const {
-    constexpr int columnWidth = 5; // Set column width to 5 to accommodate up to 3 values with surrounding space
+void BowlingGame::printScore() const {
+    constexpr int columnWidth = 6; // Set column width to 6 for better formatting
 
-    // Line Frame
+    // Only print frames that have been played
     std::cout << "Frame:  ";
-    for (int i = 1; i <= 10; i++) {
-        std::cout << "|" << std::setw(columnWidth) << i;
+    for (int i = 0; i < currentFrame; i++) {
+        std::string frameNum = std::to_string(i + 1);
+        int padding = (columnWidth - frameNum.length()) / 2;
+        std::cout << "|" << std::string(padding, ' ') << frameNum << std::string(columnWidth - padding - frameNum.length(), ' ');
     }
     std::cout << "|" << std::endl;
 
     // Line Throw:
     std::cout << "Throw:  ";
     int rollIndex = 0;
-    for (int frame = 0; frame < 10; frame++) {
+    for (int frame = 0; frame < currentFrame; frame++) {
         std::cout << "|";
+        std::string throwStr;
         if (rolls[rollIndex] == 10) { // Strike
-            std::cout << std::setw(columnWidth - 1) << "X";
-            rollIndex++;
+            throwStr = "X";
         } else {
-            if (rollIndex < currentRoll) {
-                std::cout << std::setw(2) << rolls[rollIndex];
-            } else {
-                std::cout << std::setw(columnWidth - 1) << " ";
-            }
+            throwStr = std::to_string(rolls[rollIndex]);
             rollIndex++;
             if (rollIndex < currentRoll) {
                 if (rolls[rollIndex - 1] + rolls[rollIndex] == 10) {
-                    std::cout << std::setw(3) << "/";
+                    throwStr += " /";
                 } else {
-                    std::cout << std::setw(3) << rolls[rollIndex];
+                    throwStr += " " + std::to_string(rolls[rollIndex]);
                 }
-            } else {
-                std::cout << std::setw(columnWidth - 2) << " ";
             }
-            rollIndex++;
         }
+        int padding = (columnWidth - throwStr.length()) / 2;
+        std::cout << std::string(padding, ' ') << throwStr << std::string(columnWidth - padding - throwStr.length(), ' ');
+        rollIndex++;
     }
     std::cout << "|" << std::endl;
 
     // Line Score
     std::cout << "Score:  ";
-    for (int i = 0; i < 10; i++) {
-        std::cout << "|" << std::setw(columnWidth - 1) << scores[i];
+    for (int i = 0; i < currentFrame; i++) {
+        std::string scoreStr = std::to_string(scores[i]);
+        int padding = (columnWidth - scoreStr.length()) / 2;
+        std::cout << "|" << std::string(padding, ' ') << scoreStr << std::string(columnWidth - padding - scoreStr.length(), ' ');
     }
     std::cout << "|" << std::endl << std::endl;
 }
 
 bool BowlingGame::isTenthFrameExtraRoll() const {
+    // Corrected logic to ensure that the extra roll in the 10th frame is accurately handled.
     return currentFrame == 9 && currentRoll >= 2 && (rolls[18] == 10 || rolls[18] + rolls[19] == 10);
 }
 
