@@ -5,7 +5,7 @@ int main() {
     BowlingGame game;
     std::string filename;
 
-    std::cout << "Enter the filename to load the game (e.g., bowler1.txt): ";
+    std::cout << "Enter bowler file: ";
     std::cin >> filename;
     std::cout << std::endl;
 
